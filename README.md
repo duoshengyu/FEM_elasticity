@@ -19,10 +19,14 @@ usage:
 3.Change the Configuration to Release.
 
 4.Run.
-In this step you may see "****.dll are not in your compute" something like this,
-go "lib" sub folder and copy the "****.dll" file to "Release" folder.After this,
+In this step you may see "something.dll are not in your compute" something like this,
+go "lib" sub folder and copy the "something.dll" file to "Release" folder.After this,
 it should work.
   
 For Corotation FEM I use the code form https://code.google.com/archive/p/opencloth/.
 
 Screenshots:
+
+![image](https://github.com/duoshengyu/FEM_elasticity/blob/master/screenshots/1.png)
+
+![image](https://github.com/duoshengyu/FEM_elasticity/blob/master/screenshots/2.png)
