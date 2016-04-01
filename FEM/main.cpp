@@ -15,6 +15,8 @@
 #pragma comment(lib, "OpenMeshTools.lib")
 //#pragma pack(push,1)
 
+//-----------------------------------------------------------------------
+//two debug file 
 
 extern ofstream debug;
 extern ofstream debug2;
@@ -72,6 +74,7 @@ void DrawGrid()
 	glEnd();
 }
 
+//large prime number use for hashing 
 __int64 p1 = 73856093;
 __int64 p2 = 19349663;
 __int64 p3 = 83492791;
@@ -254,7 +257,9 @@ void FEMTest::onResize(GLFWwindow* window, int nw, int nh)
 	camera.SetProj(60, (GLfloat)nw / (GLfloat)nh, 0.1f, 100.0f);
 	camera.SetView(glm::vec3(0.0f, 1.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 }
-
+//-----------------------------------------------------------------------
+//Do SP collision search
+//-----------------------------------------------------------------------
 void FEMTest::UpdateScene()
 {
 	if (accumulator >= timeStep)
@@ -300,6 +305,9 @@ void FEMTest::UpdateScene()
 		accumulator -= timeStep;
 	}
 }
+//-----------------------------------------------------------------------
+//draw
+//-----------------------------------------------------------------------
 void FEMTest::Rendering()
 {
 	timer.Tick();
@@ -618,6 +626,9 @@ void FEMTest::buildGeometryBuffers()
 {
 
 }
+//-----------------------------------------------------------------------
+//read shader
+//-----------------------------------------------------------------------
 void FEMTest::buildShader()
 {
 	GLuint vs;

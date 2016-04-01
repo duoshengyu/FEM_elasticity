@@ -14,6 +14,9 @@ float Acos(OpenMesh::Vec3f vec1, OpenMesh::Vec3f vec2, OpenMesh::Vec3f vec3)
 	float costheta = (a*a + b*b - c*c) / (2 * a * b);
 	return acos(costheta);
 }
+//-----------------------------------------------------------------------
+//convert RGB color to HSV color
+//-----------------------------------------------------------------------
 OpenMesh::Vec3f RGBtoHSV(OpenMesh::Vec3f colorRGB){
 
 	float Max = max(colorRGB[0], max(colorRGB[1], colorRGB[2]));
@@ -46,6 +49,9 @@ OpenMesh::Vec3f RGBtoHSV(OpenMesh::Vec3f colorRGB){
 
 	return hsv;
 }
+//-----------------------------------------------------------------------
+//convert HSV color to RGB color
+//-----------------------------------------------------------------------
 OpenMesh::Vec3f HSVtoRGB(OpenMesh::Vec3f hsv)
 {
 	float c = hsv[1] * hsv[2];
@@ -69,6 +75,9 @@ OpenMesh::Vec3f HSVtoRGB(OpenMesh::Vec3f hsv)
 
 	return rgb + OpenMesh::Vec3f(m, m, m);
 }
+//-----------------------------------------------------------------------
+//interporlation HSV color
+//-----------------------------------------------------------------------
 OpenMesh::Vec3f interporlationColor(float max, float min, float now, int p)
 {
 	/*
@@ -118,6 +127,9 @@ OMmodel::~OMmodel()
 	glDeleteBuffers(1, &meshFNormal);
 	glDeleteBuffers(1, &meshVColor);
 }
+//-----------------------------------------------------------------------
+//read mesh from file
+//-----------------------------------------------------------------------
 void OMmodel::OpenMeshReadFile(const char * filename)
 {
 	// request vertex normals, so the mesh reader can use normal information
@@ -316,6 +328,9 @@ void OMmodel::OpenMeshReadFile(const char * filename)
 	mesh.release_vertex_status();
 	mesh.release_halfedge_status();
 }
+//-----------------------------------------------------------------------
+//draw the mesh
+//-----------------------------------------------------------------------
 void OMmodel::RenderModel()
 {
 	glGenBuffers(1, &meshVBuffer);
@@ -427,6 +442,9 @@ OMPmodel::~OMPmodel()
 	if (debug2.good())
 	debug2.close();*/
 }
+//-----------------------------------------------------------------------
+//mesh square parameterize
+//-----------------------------------------------------------------------
 void OMPmodel::Param(const char *infile, const char *outfile, int solveType, int outType)
 {
 	// read mesh from file
@@ -599,8 +617,9 @@ void OMPmodel::Param(const char *infile, const char *outfile, int solveType, int
 		mesh.release_vertex_texcoords2D();
 	}
 }
-
+//-----------------------------------------------------------------------
 //map to a unit square
+//-----------------------------------------------------------------------
 void OMPmodel::BoundaryMap()
 {
 	//map square
@@ -701,7 +720,7 @@ bool OMPmodel::Solve(int type)
 			return -1;
 		}
 	}
-	debug << u << endl;
-	debug << "----------------------------------------------------" << endl;
-	debug << v << endl;
+	//debug << u << endl;
+	//debug << "----------------------------------------------------" << endl;
+	//debug << v << endl;
 }

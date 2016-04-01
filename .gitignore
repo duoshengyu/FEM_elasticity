@@ -5,3 +5,6 @@
 *.idb
 FEM/FEM.vcxproj
 *.filters
+*.exe
+*.suo
+*.sdf

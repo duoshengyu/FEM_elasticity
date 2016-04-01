@@ -2,14 +2,14 @@
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
 
-
+//use eigen to calculate linear equations
 #include <Eigen/Dense>
 #include <Eigen/SparseCholesky>
 #include <Eigen/IterativeLinearSolvers>
 #include <Eigen/SparseLU>
 using namespace Eigen;
 
-
+//openmesh triangle mesh
 typedef OpenMesh::TriMesh_ArrayKernelT<>  MyMesh;
 
 #define	FlatShading 0x08
@@ -115,7 +115,7 @@ private:
 						                          
 	SparseMatrix<double>                          A;
 	VectorXd                                      Bu, Bv, u, v; 
-
+	//two solver of eigen
 	SparseLU<SparseMatrix<double>>                solver1;
 	BiCGSTAB<SparseMatrix<double>>                solver2;
 public:

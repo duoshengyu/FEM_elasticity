@@ -1,8 +1,9 @@
 #include "APP.h"
 
 App *g_App = 0;
-////////////////////////////////////////////////////////////////////////////////////
+//------------------------------------------------------------------------------
 //static callback function
+//------------------------------------------------------------------------------
 static void error_callback(int error, const char* description)
 {
 	fputs(description, stderr);
@@ -33,12 +34,16 @@ static void mousewheel_callback(GLFWwindow* window, double x, double y)
 	g_App->onMouseWheel(window, x, y);
 }
 ////////////////////////////////////////////////////////////////////////////////////
-App::App() :mTitle("sample app"), mWidth(800),
-mHeight(600), isTransparency(false), isLineSmooth(false)
+App::App() :mTitle("sample app"), mWidth(1024),
+mHeight(768), isTransparency(false), isLineSmooth(false)
 {
 	g_App = this;
 }
-
+App::App(int w, int h) : mTitle("sample app"), mWidth(w),
+mHeight(h), isTransparency(false), isLineSmooth(false)
+{
+	g_App = this;
+}
 App::~App()
 {
 }
@@ -103,7 +108,7 @@ bool App::InitGLFW()
 	{
 		glfwTerminate();
 		return EXIT_FAILURE;
-	}	
+	}
 
 	return true;
 }
@@ -123,9 +128,9 @@ bool App::InitGL()
 	// transparency settings
 	if (isTransparency)
 	{
-		glEnable(GL_ALPHA_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	glEnable(GL_POLYGON_OFFSET_FILL);
@@ -135,8 +140,8 @@ bool App::InitGL()
 	// line anti-aliasing
 	if (isLineSmooth)
 	{
-		glEnable(GL_LINE_SMOOTH);
-		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	glEnable(GL_LINE_SMOOTH);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	}
 
 	glMatrixMode(GL_PROJECTION);
@@ -155,7 +160,9 @@ void App::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	// ESC
 	if ((key == GLFW_KEY_ESCAPE) && (action == GLFW_PRESS))
+	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	}
 }
 void App::onMouseWheel(GLFWwindow* window, double x, double y)
 {

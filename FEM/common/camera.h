@@ -1,6 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-
+//--------------------------------------------------------------------------------------------
+//simple track ball camera class for OpenGL
+//--------------------------------------------------------------------------------------------
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -17,14 +19,15 @@ public:
 	void                SetProj(float fFov, float fAspect, float fNearPlane, float fFarPlane);
 	void computeQuat();
 	void computeTran();
-
+	//get proj * view * world
 	glm::mat4 getMVP()                                    { return mProj * mView * mmWorld; }
 	glm::mat4 getM()                                      { return mmWorld; }
 	glm::mat4 getV()                                      { return mView; }
+	//calculate model matrix using parameters
 	void setMmworldQuat()                                 { mmWorld = glm::mat4_cast(mQuat) * mmWorld; };
 	void setMmworldTran()                                 { mmWorld = mTran * mmWorld; };
 	void setMmworldScle()                                 { mmWorld = mScale * mmWorld; };
-
+	//set scale factor
 	void setScaleFactor(float x)                          { mSFactor = x; mScale = glm::scale(glm::mat4(),glm::vec3(x)); }
 	void initMousePosition(float x, float y)              { SetCurMousePosition(x, y); SetPreMousePosition(x, y); }
 	void SetMouseLButtonStat(bool stat)                   { mbMouseLButtonDown = stat; }

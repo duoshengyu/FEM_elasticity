@@ -5,6 +5,8 @@
 #define EPSILON 0.001f
 #define EPS2  EPSILON*EPSILON
 
+
+//triangle index
 struct BoundaryTriangle
 {
 	GLushort indices[3];
@@ -18,11 +20,11 @@ struct Tetrahedron {
 	glm::mat3 Re;			//Rotational warp of tetrahedron.
 	glm::mat3 Ke[4][4];		//Stiffness element matrix
 	glm::vec3 B[4];			//Jacobian of shapefunctions; B=SN =[d/dx  0     0 ][wn 0  0]
-	//                                  [0    d/dy   0 ][0 wn  0]
-	//									[0     0   d/dz][0  0 wn]
-	//									[d/dy d/dx   0 ]
-	//									[d/dz  0   d/dx]
-	//									[0    d/dz d/dy]
+							//                                  [0    d/dy   0 ][0 wn  0]
+							//									[0     0   d/dz][0  0 wn]
+							//									[d/dy d/dx   0 ]
+							//									[d/dz  0   d/dx]
+							//									[0    d/dz d/dy]
 };
 
 struct F_add
@@ -84,8 +86,8 @@ public:
 	glm::mat3 I = glm::mat3(1);	//3x3 identity matrix
 
 	typedef map<int, glm::mat3> matrix_map;
-	vector<matrix_map> K_row;
-	vector<matrix_map> A_row;
+	vector<matrix_map> K_row;	//K stiffness matrix
+	vector<matrix_map> A_row;	//A global matrix
 	typedef matrix_map::iterator matrix_iterator;
 	vector<glm::vec3> F0;
 	vector<glm::vec3> b;
@@ -138,15 +140,15 @@ public:
 	void SetSelectIndex(int i){ selected_index = i; };
 	int GetSelectIndex(){ return selected_index; };
 
-	void CalculateK();
-	void ReadModelFromFile(float x, float y, float z, bool ifFixed, const char*name);
+	void CalculateK();																						//calculate stiffness		
+	void ReadModelFromFile(float x, float y, float z, bool ifFixed, const char*name);						//read mesh
 	void ClearStiffnessAssembly();
-	void RecalcMassMatrix();
-	void InitializePlastic();
+	void RecalcMassMatrix();																				//initiate mass
+	void InitializePlastic();																				//set plastic to zero
 	void OnShutdown();
-	void ComputeForces();
+	void ComputeForces();																					//add gravity force
 	glm::mat3 ortho_normalize(glm::mat3 A);
-	void UpdateOrientation();
+	void UpdateOrientation();																				//multiply rotation matrix
 	void ResetOrientation();
 	void StiffnessAssembly();
 	void AddPlasticityForce(float dt);

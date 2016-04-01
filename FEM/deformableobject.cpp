@@ -4,6 +4,11 @@ extern ofstream debug;
 extern vector<DeformableObject> g_models;
 extern float g_l;//global grid size
 extern vector<vector<F_add>> g_F;
+//-----------------------------------------------------------------------
+//Constructe function. Include read mesh, initiate necessary buffer.
+//Initiate FEM buffer, calculate distance fild and gradient fild
+// G = (d(i+1,j,k)-d(i-1,j,k), d(i,j+1,k) - d(i,j-1,k), d(i,j,k+1) - d(i,j,k-1) )
+//-----------------------------------------------------------------------
 DeformableObject::DeformableObject()
 {
     d15 = Y / (1.0f + nu) / (1.0f - 2 * nu);
@@ -163,7 +168,9 @@ DeformableObject::~DeformableObject()
 {
 	OnShutdown();
 }
-
+//-----------------------------------------------------------------------
+//Calculate mesh stiffness
+//-----------------------------------------------------------------------
 void DeformableObject::CalculateK() {
 
 	for (size_t k = 0; k<tetrahedra.size(); k++) {
@@ -457,7 +464,9 @@ glm::mat3 DeformableObject::ortho_normalize(glm::mat3 A) {
 		row1,
 		row2);
 }
-
+//-----------------------------------------------------------------------
+//Update Orientation
+//-----------------------------------------------------------------------
 void DeformableObject::UpdateOrientation() {
 	for (int k = 0; k<total_tetrahedra; k++) {
 		//Based on description on page 362-364 
@@ -549,7 +558,9 @@ void DeformableObject::StiffnessAssembly() {
 		}
 	}
 }
-
+//-----------------------------------------------------------------------
+//Add Plasticity
+//-----------------------------------------------------------------------
 void DeformableObject::AddPlasticityForce(float dt) {
 	for (int k = 0; k<total_tetrahedra; k++) {
 		float e_total[6];
@@ -644,6 +655,9 @@ void DeformableObject::AddPlasticityForce(float dt) {
 		}
 	}
 }
+//-----------------------------------------------------------------------
+//Dynamics Assembly
+//-----------------------------------------------------------------------
 void DeformableObject::DynamicsAssembly(float dt) {
 	float dt2 = dt*dt;
 
@@ -686,6 +700,9 @@ void DeformableObject::DynamicsAssembly(float dt) {
 		b[k] += V[k] * m_i;
 	}
 }
+//-----------------------------------------------------------------------
+//CG solver
+//-----------------------------------------------------------------------
 void DeformableObject::ConjugateGradientSolver(float dt) {
 
 
@@ -779,7 +796,9 @@ void DeformableObject::UpdatePosition(float dt) {
 		X[k] += float(dt)*V[k];
 	}
 }
-
+//-----------------------------------------------------------------------
+//GroundCollision
+//-----------------------------------------------------------------------
 
 void DeformableObject::GroundCollision()
 {
@@ -793,7 +812,9 @@ void DeformableObject::GroundCollision()
 		}
 	}
 }
-
+//-----------------------------------------------------------------------
+//simulate
+//-----------------------------------------------------------------------
 void DeformableObject::StepPhysics(float dt) {
 	ComputeForces();
 
@@ -818,7 +839,9 @@ void DeformableObject::StepPhysics(float dt) {
 	UpdatePosition(dt);
 	//GroundCollision();
 }
-
+//-----------------------------------------------------------------------
+//draw mesh
+//-----------------------------------------------------------------------
 void DeformableObject::RenderModel()
 {
 	/*
@@ -915,6 +938,12 @@ void DeformableObject::RenderModel()
 	glEnd();*/
 }
 
+//-----------------------------------------------------------------------
+//Distance Fild: Shortest distance vertices in grid to mesh
+//Gradient Fild:
+// G = (d(i+1,j,k)-d(i-1,j,k), d(i,j+1,k) - d(i,j-1,k), d(i,j,k+1) - d(i,j,k-1) )
+//-----------------------------------------------------------------------
+
 void DeformableObject::DistanceFildAndGradientFild()
 {
 	float mx, my, mz, Mx, My, Mz;
@@ -1001,6 +1030,11 @@ void DeformableObject::DistanceFildAndGradientFild()
 			distanceFild[di + dj + dkp1] - distanceFild[di + dj + dk_1]);
 			}
 }
+//-----------------------------------------------------------------------
+//To determine whether a vertex is in a tetrahedron
+//If a vertex is in a tet then it can represent as the weight multiply
+//sum of four vertices. s.t 0 < weight < 1.
+//-----------------------------------------------------------------------
 bool  DeformableObject::IsVinsideObj(glm::vec3 v)
 {
 	for (int i = 0; i < total_tetrahedra; ++i)
@@ -1038,6 +1072,9 @@ bool  DeformableObject::IsVinsideObj(glm::vec3 v)
 	}
 	return false;
 }
+//-----------------------------------------------------------------------
+//Shortest distant of a vertex to mesh
+//-----------------------------------------------------------------------
 float DeformableObject::minDistanceBetweenVetexAndTriangle(glm::vec3 v, vector<BoundaryTriangle> *bTriangle)
 //float DeformableObject::minDistanceBetweenVetexAndTriangle(glm::vec3 v, vector<BoundaryTriangle> *bTriangle, glm::vec3 *dhelp2)
 {
@@ -1053,6 +1090,9 @@ float DeformableObject::minDistanceBetweenVetexAndTriangle(glm::vec3 v, vector<B
 	}
 	return distance;
 }
+//-----------------------------------------------------------------------
+//Shortest distant of a vertex to a triangle
+//-----------------------------------------------------------------------
 float DeformableObject::DistanceBetweenVT(glm::vec3 v, BoundaryTriangle bt)
 //float DeformableObject::DistanceBetweenVT(glm::vec3 v, BoundaryTriangle bt, glm::vec3 *dhelp)
 {//geometric tools for computer graphics p.275
@@ -1185,6 +1225,9 @@ float DeformableObject::DistanceBetweenVT(glm::vec3 v, BoundaryTriangle bt)
 			}
 		}
 }
+//-----------------------------------------------------------------------
+//calculte shortest distance and gradient of arbitrary point using interpolate
+//-----------------------------------------------------------------------
 void DeformableObject::VetexDistanceAndGradient()
 {
 	for (int i = 0; i < total_points; ++i)
@@ -1239,7 +1282,9 @@ void DeformableObject::InterpolateDistanceGradient(int ind, glm::vec3 *g)
 	*g = gabcd * (1 - factorj) + gefgh * factorj;
 
 }
-
+//-----------------------------------------------------------------------
+//Generate a tetrahedron mesh(cuboid)
+//-----------------------------------------------------------------------
 void DeformableObject::GenerateBlocks(size_t xdim, size_t ydim, size_t zdim, float width, float height, float depth) {
 	total_points = (xdim + 1)*(ydim + 1)*(zdim + 1);
 	X.resize(total_points);
@@ -1311,6 +1356,10 @@ void DeformableObject::Reset()
 	debug << "Reset all." << endl;
 	//debug2 << "Reset all." << endl;
 }
+//-----------------------------------------------------------------------
+//Spatial hasing first pass 
+//hasing all point to space, mark with mesh index
+//-----------------------------------------------------------------------
 void DeformableObject::firstPass(HashMap *H, int objId)
 {
 	for (int j = 0; j < total_points; ++j)
@@ -1334,6 +1383,11 @@ void DeformableObject::firstPass(HashMap *H, int objId)
 		H->cell[h].nodes.push_back(v);
 	}
 }
+//-----------------------------------------------------------------------
+//Spatial hasing second pass 
+//AABB a tetrahedron, search hash table and determine whether the vertex
+//is in this tetrahedron
+//-----------------------------------------------------------------------
 void DeformableObject::secondPass(HashMap *H, int objId)
 {//vector parameter  a vector is expensive;
 	//debug << "---------------------" << 2 << endl;
@@ -1443,6 +1497,9 @@ void DeformableObject::secondPass(HashMap *H, int objId)
 				}
 	}
 }
+//-----------------------------------------------------------------------
+//Add external force
+//-----------------------------------------------------------------------
 void DeformableObject::F_ADD(int objId)
 {
 	for (int i = 0; i < g_F[objId].size(); ++i)
@@ -1450,7 +1507,9 @@ void DeformableObject::F_ADD(int objId)
 		F[g_F[objId][i].LocalId] += g_F[objId][i].f;
 	}
 }
-
+//-----------------------------------------------------------------------
+//Calculate vertex nomal
+//-----------------------------------------------------------------------
 void DeformableObject::CalculateVN()
 {
 	for (int i = 0; i < bTriangle.size(); ++i)

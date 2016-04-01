@@ -32,11 +32,12 @@ void TrackballCamera::SetProj(float fFov, float fAspect, float fNearPlane, float
 {
 	mProj = glm::perspective(fFov, fAspect, fNearPlane, fFarPlane);
 }
-
+//calculate rotate quaternion
 void TrackballCamera::computeQuat()
-{//calculate rotate quaternion
+{
 	float d, as;
 	glm::vec3 preVec, curVec, vMove, axis;
+
 	//transform from window coordinate to projection plane
 	preVec.x = (2.0f * preMousePosition.x / windowWidth - 1.0f) / mProj[0][0];
 	preVec.y = (-2.0f * preMousePosition.y / windowHeight + 1.0f) / mProj[1][1];
@@ -48,7 +49,7 @@ void TrackballCamera::computeQuat()
 	curVec.z = 1.0f;
 
 	vMove = curVec - preVec;
-
+	//calculate rotate axis
 	axis = glm::cross(curVec, preVec);
 	axis = glm::normalize(axis);
 
