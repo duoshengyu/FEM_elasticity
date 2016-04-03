@@ -22,7 +22,7 @@ extern ofstream debug;
 extern ofstream debug2;
 float scale = 3.0f;
 
-const int width = 1024, height = 768;
+const int width = 800, height = 600;
 
 float timeStep = 1 / 60.0f;
 float currentTime = 0;
@@ -333,7 +333,9 @@ void FEMTest::Rendering()
 		totalFrames = 0;
 	}
 
-	sprintf_s(info, "FPS: %3.2f, Frame time (GLUT): %3.4f msecs, Frame time (QP): %3.3f, Stiffness Warp: %s", fps, frameTime, frameTimeQP, bunny.bUseStiffnessWarping ? "On" : "Off");
+	//sprintf_s(info, "FPS: %3.2f, Frame time (GLUT): %3.4f msecs, Frame time (QP): %3.3f, Stiffness Warp: %s", fps, frameTime, frameTimeQP, bunny.bUseStiffnessWarping ? "On" : "Off");
+	sprintf_s(info, "FPS: %3.2f, Stiffness Warp: %s", fps, bunny.bUseStiffnessWarping ? "On" : "Off");
+
 	glfwSetWindowTitle(window, info);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
