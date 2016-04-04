@@ -1,0 +1,13 @@
+﻿  main.cpp
+e:\research student\opengl\fem\main.cpp(2): fatal error C1083: Cannot open include file: 'App.h': No such file or directory
+  deformableobject.cpp
+e:\research student\opengl\fem\deformableobject.h(1): fatal error C1083: Cannot open include file: 'App.h': No such file or directory
+  OMmodel.cpp
+e:\research student\opengl\include\openmesh\core\system\compiler.hh(108): fatal error C1189: #error :  "You have to define _USE_MATH_DEFINES in the compiler settings!"
+  GameTimer.cpp
+e:\research student\opengl\fem\common\gametimer.h(17): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+  camera.cpp
+  GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+  GLM: angleAxis function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+  App.cpp
+  Generating Code...
