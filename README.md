@@ -23,16 +23,22 @@
 
 
 *プログラムを作成する上で苦労した箇所は？
+
 デバッグ、FEM弾性体シミュレーションの勉強
 
 *力をいれて作った部分で、「プログラム上」で特に注意してみてもらいたい箇所は？
+
 deformableobject.cppで Spatial HashingのfirstPass（ハッシュの構築）関数、secondPass（検索）関数
 
 *参考にしたソースファイルがあるなら、どの様なところを参考にしましたか？またその部分のファイル名を書いてください
+
 OpenCloth：https://github.com/mmmovania/opencloth
 FEM弾性体シミュレーションに参考。
 
-*他人のコードと関数：deform_other.cpp　弾性体シミュレーションの関連
+*他人のコードと関数：
+
+deform_other.cpp　弾性体シミュレーションの関連
+
 
 # FEM_elasticity
 This is a Corotation FEM elasticity, Spatial Hashing for collision detetion 
